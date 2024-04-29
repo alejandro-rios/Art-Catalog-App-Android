@@ -9,7 +9,7 @@ The architecture used for the application consists of the following:
 - Clean Architecture.
 - Repository pattern.
 - MVVM pattern.
-- Android Architecture component([ViewModel](https://developer.android.com/topic/libraries/architecture/viewmodel), [Navigation](https://developer.android.com/guide/navigation), [Room](https://developer.android.com/training/data-storage/room))
+- Android Architecture components ([ViewModel](https://developer.android.com/topic/libraries/architecture/viewmodel), [Navigation](https://developer.android.com/guide/navigation), [Room](https://developer.android.com/training/data-storage/room), [Lifecycle](https://developer.android.com/jetpack/androidx/releases/lifecycle))
 
 This project uses basic UiStates(`ArtworkDetailUIState`, `ArtworkFavoritesUIState`, `ArtworksUiState`) to handle the application 
 interface state at a given moment.
@@ -25,6 +25,7 @@ interface state at a given moment.
 - [ViewModel](https://developer.android.com/topic/libraries/architecture/viewmodel): A business logic or screen level state holder.
 - [Room](https://developer.android.com/training/data-storage/room): Room is an abstraction layer on top of a SQLite database.
 - [Navigation](https://developer.android.com/guide/navigation): Navigation is a framework for navigating between 'destinations' within an Android application.
+- [Lifecycle](https://developer.android.com/jetpack/androidx/releases/lifecycle): Build lifecycle-aware components that can adjust behavior based on the current lifecycle state.
 - [Coil](https://coil-kt.github.io/coil/): Image loading for Android and Compose Multiplatform.
 - [Mockk](https://mockk.io/): Open source library focused on making mocking test more easily.
 - [Kluent](https://markusamshove.github.io/Kluent/): Fluent Assertion-Library for Kotlin.
