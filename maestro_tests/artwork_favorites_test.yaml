@@ -1,0 +1,26 @@
+appId: com.alejandrorios.art_catalog_app
+onFlowComplete:
+  - stopApp
+---
+- launchApp:
+    permissions:
+      notifications: allow
+- waitForAnimationToEnd
+- assertVisible: "Home"
+- tapOn:
+    id: "artworkTile"
+    index: 0
+- waitForAnimationToEnd
+- assertVisible: "Dimensions"
+- tapOn: "SaveInFavorites"
+- extendedWaitUntil:
+    visible:  "Artwork saved successfully"
+    timeout: 10000
+- doubleTapOn: "Artwork saved successfully"
+- waitForAnimationToEnd
+- tapOn: "backArrow"
+- waitForAnimationToEnd
+- tapOn: "Favorites"
+- waitForAnimationToEnd
+- assertVisible:
+    id: "swipeableListView"

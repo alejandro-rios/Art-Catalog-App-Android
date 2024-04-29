@@ -1,0 +1,27 @@
+<resources>
+    <string name="app_name">Art Catalog App</string>
+    <string name="no_favorites">No favorites yet</string>
+    <string name="no_favorites_message">You haven\'t marked any favorites yet</string>
+    <string name="retry">Retry</string>
+    <string name="description">Description</string>
+    <string name="no_description">No description provided</string>
+    <string name="dimensions">Dimensions</string>
+    <string name="saved_in_favorites_message">Artwork saved successfully</string>
+    <string name="removed_from_favorites_message">Artwork removed successfully</string>
+    <string name="error_title">Oops!</string>
+    <string name="error_message">It looks like something went wrong. \nDon\'t worry, let\'s try again.</string>
+    <string name="error_alter_message">Something seems to have gone wrong. \nCheck your internet connection.</string>
+    <string name="lorem_ipsum">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque auctor eleifend molestie. Suspendisse potenti. Morbi sem lorem, dapibus sed mi non, sollicitudin finibus ex. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae; Vivamus sed elit felis. Morbi pretium sit amet lorem a ornare. Vivamus pellentesque accumsan tincidunt. Nam facilisis porttitor purus, nec dictum velit ultrices vel. Donec vitae sem et leo sodales sollicitudin. Morbi lobortis, purus in pulvinar ornare, nunc arcu imperdiet erat, sed consectetur diam enim ut sem. Ut diam ex, faucibus a felis a, rutrum sodales ligula. Donec ex velit, ornare non tempor sed, molestie quis justo. Mauris tellus nisi, tempor in efficitur sit amet, feugiat id eros.
+
+Maecenas accumsan mollis ante nec fermentum. Pellentesque laoreet risus et fermentum tristique. Proin feugiat est at tellus consectetur fermentum. Suspendisse semper finibus tincidunt. Nam vitae risus rutrum, volutpat dolor vel, maximus quam. Praesent odio nulla, maximus vel nisl vitae, porttitor euismod mi. Pellentesque tincidunt arcu ut nisi pretium hendrerit. Aliquam aliquam vitae nunc nec volutpat. Pellentesque tempor aliquam felis, nec pretium turpis efficitur a. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus.</string>
+    <string name="html_text_sample">
+    <![CDATA[
+    <b>For your eyes only!</b> Anyone who has access to your 12 word recovery phrase can access your entire wallet. <a href="link_1">Learn more</a>
+    ]]>
+    </string>
+    <string name="artwork_thumb_description">artworkThumbnail</string>
+    <string name="artwork_tile_thumb_description">ArtworkTileThumbnail</string>
+    <string name="back_arrow_description">backArrow</string>
+    <string name="favorite_description">SaveInFavorites</string>
+    <string name="back_description">goBack</string>
+</resources>

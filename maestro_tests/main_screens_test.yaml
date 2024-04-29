@@ -1,0 +1,21 @@
+appId: com.alejandrorios.art_catalog_app
+onFlowComplete:
+  - stopApp
+---
+- launchApp:
+    permissions:
+      notifications: allow
+- waitForAnimationToEnd
+- assertVisible: "Home"
+- assertVisible:
+    id: "artworkTile"
+    index: 0
+- tapOn: "Favorites"
+- waitForAnimationToEnd
+- assertVisible: "No favorites yet"
+- tapOn: "Home"
+- tapOn:
+    id: "artworkTile"
+    index: 0
+- waitForAnimationToEnd
+- assertVisible: "Dimensions"
