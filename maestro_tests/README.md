@@ -16,3 +16,4 @@ to run both test or `maestro test maestro_tests/TEST_FLOW_TO_RUN` to run one spe
 ## 🎥 Test sample video
 
 
+https://github.com/alejandro-rios/Art-Catalog-App/assets/10689052/46fc1f94-408e-4061-9970-1ef80f29302a
