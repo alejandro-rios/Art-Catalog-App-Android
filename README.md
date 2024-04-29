@@ -86,13 +86,12 @@ This project includes unit tests for:
 
 <img
 alt="unit_tests"
-height="400"
 src="media/unit_tests.png" />
 
 It also includes integration test for Room Database:
+
 <img
 alt="room_tests"
-height="400"
 src="media/room_tests.png" />
 
 And UI tests with [Maestro](/maestro_tests)
