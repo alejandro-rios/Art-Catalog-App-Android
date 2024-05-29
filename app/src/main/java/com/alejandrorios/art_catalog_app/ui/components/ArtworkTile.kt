@@ -70,7 +70,7 @@ fun ArtworkTile(artwork: Artwork, onClick: () -> Unit) {
                     modifier = Modifier.fillMaxSize()
                 )
             }
-            HorizontalSpacer()
+            HorizontalSpacer(8.dp)
             Column(
                 modifier = Modifier
                     .fillMaxSize()
@@ -80,7 +80,7 @@ fun ArtworkTile(artwork: Artwork, onClick: () -> Unit) {
                 Text(
                     text = artwork.title,
                     maxLines = 3,
-                    fontSize = 20.sp,
+                    fontSize = 18.sp,
                     fontWeight = FontWeight.W400,
                     color = Color.Black
                 )
@@ -89,11 +89,10 @@ fun ArtworkTile(artwork: Artwork, onClick: () -> Unit) {
                     fontSize = 12.sp,
                     color = GrayText,
                 )
-                VerticalSpacer(spacing = 8.dp)
                 artwork.artistTitle?.let { artist ->
                     Text(
                         text = artist,
-                        fontSize = 16.sp,
+                        fontSize = 15.sp,
                         fontWeight = FontWeight.W400,
                         maxLines = 1,
                         color = Color.Black

@@ -25,7 +25,9 @@ fun ArtworkCatalogNavGraph(
         startDestination = startDestination
     ) {
         composable(NavigationItem.Home.route) {
-            ArtworksScreen(navController)
+            ArtworksScreen(navigateToArtworkDetails = {
+                navController.navigate("${NavigationItem.ArtworkDetails.route}/$it")
+            })
         }
         composable(
             route = "${NavigationItem.ArtworkDetails.route}/{artworkId}",
@@ -41,12 +43,14 @@ fun ArtworkCatalogNavGraph(
         ) { backStackEntry ->
             val artworkId = backStackEntry.arguments?.getString("artworkId")
 
-            ArtworkDetailScreen(navController, artworkId = artworkId!!.toInt())
+            ArtworkDetailScreen(onGoBackPressed = { navController.popBackStack() }, artworkId = artworkId!!.toInt())
         }
         composable(
             route = NavigationItem.ArtworkFavorites.route,
         ) {
-            ArtworkFavoritesScreen(navController)
+            ArtworkFavoritesScreen(navigateToArtworkDetails = {
+                navController.navigate("${NavigationItem.ArtworkDetails.route}/$it")
+            })
         }
     }
 }

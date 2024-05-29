@@ -95,6 +95,12 @@ It also includes integration test for Room Database:
 alt="room_tests"
 src="media/room_tests.png" />
 
+And an integration test for Navigation:
+
+<img
+alt="navigation_tests"
+src="media/navigation_tests.png" />
+
 And UI tests with [Maestro](/maestro_tests)
 
 ## 🖼️ Images

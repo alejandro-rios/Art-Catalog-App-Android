@@ -22,7 +22,6 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.semantics.testTagsAsResourceId
 import androidx.compose.ui.unit.dp
-import androidx.navigation.NavController
 import com.alejandrorios.art_catalog_app.R
 import com.alejandrorios.art_catalog_app.helpers.NotificationHelper
 import com.alejandrorios.art_catalog_app.ui.components.ArtworkDetailView
@@ -35,7 +34,7 @@ import org.koin.compose.koinInject
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalComposeUiApi::class)
 @Composable
 fun ArtworkDetailScreen(
-    navController: NavController,
+    onGoBackPressed: () -> Unit,
     artworkId: Int,
     viewModel: ArtworkDetailViewModel = koinViewModel(),
     notificationHelper: NotificationHelper = koinInject(),
@@ -51,7 +50,7 @@ fun ArtworkDetailScreen(
             TopAppBar(
                 title = {},
                 navigationIcon = {
-                    IconButton(onClick = { navController.popBackStack() }) {
+                    IconButton(onClick = { onGoBackPressed() }) {
                         Icon(
                             imageVector = Icons.AutoMirrored.Filled.ArrowBack,
                             contentDescription = stringResource(R.string.back_arrow_description)

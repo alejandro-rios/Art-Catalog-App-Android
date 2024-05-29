@@ -9,20 +9,20 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.unit.dp
-import androidx.navigation.NavController
 import com.alejandrorios.art_catalog_app.R
 import com.alejandrorios.art_catalog_app.helpers.NotificationHelper
 import com.alejandrorios.art_catalog_app.ui.components.EmptyView
 import com.alejandrorios.art_catalog_app.ui.components.ShimmerLoadingView
 import com.alejandrorios.art_catalog_app.ui.components.SwipeableListView
-import com.alejandrorios.art_catalog_app.ui.navigation.NavigationItem
 import org.koin.androidx.compose.koinViewModel
 import org.koin.compose.koinInject
 
 @Composable
 fun ArtworkFavoritesScreen(
-    navController: NavController,
+    navigateToArtworkDetails: (artworkId: Int) -> Unit,
     viewModel: ArtworkFavoritesViewModel = koinViewModel(),
     notificationHelper: NotificationHelper = koinInject(),
 ) {
@@ -34,7 +34,8 @@ fun ArtworkFavoritesScreen(
 
     Column(
         modifier = Modifier
-            .fillMaxSize(),
+            .fillMaxSize()
+            .semantics {  contentDescription = "Artwork Favorites" },
     ) {
         when {
             uiState.isLoading -> ShimmerLoadingView()
@@ -48,7 +49,7 @@ fun ArtworkFavoritesScreen(
             else -> SwipeableListView(
                 items = uiState.artworks,
                 onClickItem = { artworkId ->
-                    navController.navigate("${NavigationItem.ArtworkDetails.route}/$artworkId")
+                    navigateToArtworkDetails(artworkId)
                 },
                 onDeleteItem = {
                     viewModel.removeArtwork(it)

@@ -8,18 +8,18 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.unit.dp
-import androidx.navigation.NavController
 import com.alejandrorios.art_catalog_app.ui.components.EmptyView
 import com.alejandrorios.art_catalog_app.ui.components.ErrorView
 import com.alejandrorios.art_catalog_app.ui.components.PaginationListView
 import com.alejandrorios.art_catalog_app.ui.components.ShimmerLoadingView
-import com.alejandrorios.art_catalog_app.ui.navigation.NavigationItem
 import org.koin.androidx.compose.koinViewModel
 
 @Composable
 fun ArtworksScreen(
-    navController: NavController,
+    navigateToArtworkDetails: (artworkId: Int) -> Unit,
     viewModel: ArtworksViewModel = koinViewModel()
 ) {
     val uiState by viewModel.uiState.collectAsState()
@@ -30,7 +30,8 @@ fun ArtworksScreen(
 
     Column(
         modifier = Modifier
-            .fillMaxSize(),
+            .fillMaxSize()
+            .semantics {  contentDescription = "Artworks Screen" },
     ) {
         when {
             uiState.isEmpty -> EmptyView(modifier = Modifier.padding(horizontal = 16.dp))
@@ -44,7 +45,7 @@ fun ArtworksScreen(
                 items = uiState.artworks,
                 isLoadingItems = uiState.isLoadingMore,
                 onClickItem = { artworkId ->
-                    navController.navigate("${NavigationItem.ArtworkDetails.route}/$artworkId")
+                    navigateToArtworkDetails(artworkId)
                 },
                 onNewItems = viewModel::loadMoreResults
             )
