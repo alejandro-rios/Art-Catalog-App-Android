@@ -5,12 +5,12 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.alejandrorios.art_catalog_app.ui.components.EmptyView
 import com.alejandrorios.art_catalog_app.ui.components.ErrorView
 import com.alejandrorios.art_catalog_app.ui.components.PaginationListView
@@ -22,7 +22,7 @@ fun ArtworksScreen(
     navigateToArtworkDetails: (artworkId: Int) -> Unit,
     viewModel: ArtworksViewModel = koinViewModel()
 ) {
-    val uiState by viewModel.uiState.collectAsState()
+    val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 
     LaunchedEffect(Unit) {
         viewModel.fetchArtworks()

@@ -101,7 +101,13 @@ And an integration test for Navigation:
 alt="navigation_tests"
 src="media/navigation_tests.png" />
 
-And UI tests with [Maestro](/maestro_tests)
+And an ui test for Screens:
+
+<img
+alt="ui_tests"
+src="media/ui_tests.png" />
+
+And End to End tests with [Maestro](/maestro_tests)
 
 ## 🖼️ Images
 <img

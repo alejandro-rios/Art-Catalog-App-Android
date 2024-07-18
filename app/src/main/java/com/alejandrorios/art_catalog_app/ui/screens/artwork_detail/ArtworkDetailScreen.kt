@@ -13,7 +13,6 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
@@ -22,6 +21,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.semantics.testTagsAsResourceId
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.alejandrorios.art_catalog_app.R
 import com.alejandrorios.art_catalog_app.helpers.NotificationHelper
 import com.alejandrorios.art_catalog_app.ui.components.ArtworkDetailView
@@ -39,7 +39,7 @@ fun ArtworkDetailScreen(
     viewModel: ArtworkDetailViewModel = koinViewModel(),
     notificationHelper: NotificationHelper = koinInject(),
 ) {
-    val uiState by viewModel.uiState.collectAsState()
+    val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 
     LaunchedEffect(artworkId) {
         viewModel.getArtworkDetail(artworkId)
