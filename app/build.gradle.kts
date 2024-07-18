@@ -1,6 +1,7 @@
 plugins {
     alias(libs.plugins.androidApplication)
     alias(libs.plugins.jetbrainsKotlinAndroid)
+    alias(libs.plugins.jetbrainsComposeCompiler)
     alias(libs.plugins.jetbrainsKotlinSerialization)
     alias(libs.plugins.kotlinKsp)
 }
@@ -16,7 +17,7 @@ android {
         versionCode = 1
         versionName = "1.0"
 
-        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+        testInstrumentationRunner = "com.alejandrorios.art_catalog_app.utils.InstrumentationTestRunner"
         vectorDrawables {
             useSupportLibrary = true
         }
@@ -52,6 +53,7 @@ dependencies {
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
+    implementation(libs.androidx.lifecycle.runtime.compose)
     implementation(libs.androidx.activity.compose)
     implementation(platform(libs.androidx.compose.bom))
     implementation(libs.androidx.ui)
@@ -63,6 +65,7 @@ dependencies {
 
     // DI
     implementation(libs.koin)
+    implementation(libs.koin.android)
 
     // Image loading
     implementation(libs.coil)
@@ -90,10 +93,13 @@ dependencies {
     testImplementation(libs.mockk)
     testImplementation(libs.kluent)
     testImplementation(libs.turbine)
+    testImplementation(libs.koin.test)
     androidTestImplementation(libs.androidx.junit)
+    androidTestImplementation(libs.koin.test.junit)
     androidTestImplementation(libs.androidx.espresso.core)
     androidTestImplementation(platform(libs.androidx.compose.bom))
     androidTestImplementation(libs.androidx.navigation.testing)
+    androidTestImplementation(libs.androidx.rules)
     androidTestImplementation(libs.androidx.ui.test.junit4)
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
