@@ -8,11 +8,14 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.FloatingActionButton
+import androidx.compose.material3.Icon
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.derivedStateOf
@@ -24,11 +27,15 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.testTag
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.semantics.testTagsAsResourceId
 import androidx.compose.ui.unit.dp
+import com.alejandrorios.art_catalog_app.R
 import com.alejandrorios.art_catalog_app.domain.models.Artwork
+import com.alejandrorios.art_catalog_app.ui.theme.LightPrimary
 import kotlinx.coroutines.launch
 
 /**
@@ -141,10 +148,20 @@ private fun CustomListView(
                 .align(Alignment.BottomEnd)
                 .padding(16.dp),
         ) {
-            BackToTop {
-                scope.launch {
-                    listState.scrollToItem(0)
-                }
+            FloatingActionButton(
+                modifier = Modifier.size(50.dp),
+                containerColor = LightPrimary,
+                contentColor = Color.White,
+                onClick = {
+                    scope.launch {
+                        listState.scrollToItem(0)
+                    }
+                },
+            ) {
+                Icon(
+                    painter = painterResource(id = R.drawable.ic_north),
+                    contentDescription = "back to top"
+                )
             }
         }
     }
