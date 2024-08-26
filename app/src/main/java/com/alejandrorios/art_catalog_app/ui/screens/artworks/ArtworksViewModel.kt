@@ -15,7 +15,6 @@ class ArtworksViewModel(private val artRepository: ArtRepository) : ViewModel() 
     private val _uiState = MutableStateFlow(ArtworksUiState())
     val uiState: StateFlow<ArtworksUiState> = _uiState.asStateFlow()
 
-
     fun fetchArtworks() {
         _uiState.update { currentState ->
             currentState.copy(isLoading = true)

@@ -15,10 +15,10 @@ import kotlin.coroutines.suspendCoroutine
 
 class ArtRepositoryImpl(
     private val service: ArtAPIService,
-    private val defaultDispatcher: CoroutineDispatcher = Dispatchers.IO,
+    private val dispatcher: CoroutineDispatcher = Dispatchers.IO,
 ) : ArtRepository {
 
-    override suspend fun getArtworks(page: Int, limit: Int): CallResponse<ArtworkResults> = withContext(defaultDispatcher) {
+    override suspend fun getArtworks(page: Int, limit: Int): CallResponse<ArtworkResults> = withContext(dispatcher) {
         suspendCoroutine { continuation ->
             service.getArtworks(page, limit).handleResponse(continuation = continuation) { apiResponse ->
                 APIArtworkResultsMapper.mapAsArtworkResults(apiResponse)
@@ -26,7 +26,7 @@ class ArtRepositoryImpl(
         }
     }
 
-    override suspend fun getArtworkDetails(artworkId: Int): CallResponse<ArtworkDetail> = withContext(defaultDispatcher) {
+    override suspend fun getArtworkDetails(artworkId: Int): CallResponse<ArtworkDetail> = withContext(dispatcher) {
         suspendCoroutine { continuation ->
             service.getArtworkDetails(id = artworkId).handleResponse(continuation = continuation) { apiResponse ->
                 APIArtworkDetailResultMapper.mapAsArtworkDetail(apiResponse)

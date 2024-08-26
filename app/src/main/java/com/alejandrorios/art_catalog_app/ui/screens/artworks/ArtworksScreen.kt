@@ -31,7 +31,7 @@ fun ArtworksScreen(
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .semantics {  contentDescription = "Artworks Screen" },
+            .semantics { contentDescription = "Artworks Screen" },
     ) {
         when {
             uiState.isEmpty -> EmptyView(modifier = Modifier.padding(horizontal = 16.dp))
