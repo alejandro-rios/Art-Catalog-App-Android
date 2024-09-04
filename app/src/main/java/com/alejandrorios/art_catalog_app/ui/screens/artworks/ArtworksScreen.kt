@@ -10,17 +10,17 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.alejandrorios.art_catalog_app.ui.components.EmptyView
 import com.alejandrorios.art_catalog_app.ui.components.ErrorView
 import com.alejandrorios.art_catalog_app.ui.components.PaginationListView
 import com.alejandrorios.art_catalog_app.ui.components.ShimmerLoadingView
-import org.koin.androidx.compose.koinViewModel
 
 @Composable
 fun ArtworksScreen(
     navigateToArtworkDetails: (artworkId: Int) -> Unit,
-    viewModel: ArtworksViewModel = koinViewModel()
+    viewModel: ArtworksViewModel = hiltViewModel()
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 

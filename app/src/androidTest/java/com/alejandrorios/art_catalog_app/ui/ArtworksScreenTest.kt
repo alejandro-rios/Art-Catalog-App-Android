@@ -1,41 +1,39 @@
 package com.alejandrorios.art_catalog_app.ui
 
 import android.content.Context
+import androidx.activity.compose.setContent
 import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.assertIsNotDisplayed
 import androidx.compose.ui.test.junit4.createComposeRule
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.onNodeWithText
+import androidx.test.core.app.ActivityScenario
 import androidx.test.platform.app.InstrumentationRegistry
+import androidx.test.rule.GrantPermissionRule
 import com.alejandrorios.art_catalog_app.R
-import com.alejandrorios.art_catalog_app.di.appModule
-import com.alejandrorios.art_catalog_app.di.dataBaseModule
-import com.alejandrorios.art_catalog_app.di.dataModule
-import com.alejandrorios.art_catalog_app.domain.repository.ArtRepository
 import com.alejandrorios.art_catalog_app.ui.screens.artworks.ArtworksScreen
 import com.alejandrorios.art_catalog_app.ui.theme.Art_catalog_appTheme
-import com.alejandrorios.art_catalog_app.utils.FakeArtRepositoryImpl
-import com.alejandrorios.art_catalog_app.utils.KoinTestRule
+import com.alejandrorios.art_catalog_app.utils.FakeRepositoryModule
 import com.alejandrorios.art_catalog_app.utils.mockedArtwork
+import dagger.hilt.android.testing.HiltAndroidRule
+import dagger.hilt.android.testing.HiltAndroidTest
+import org.junit.Before
 import org.junit.FixMethodOrder
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runners.MethodSorters
-import org.koin.compose.KoinContext
-import org.koin.compose.getKoin
-import org.koin.dsl.module
 
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
+@HiltAndroidTest
 class ArtworksScreenTest {
 
-    private val instrumentedTestModule = module {
-        single<ArtRepository> { FakeArtRepositoryImpl() }
-    }
-
-    @get:Rule(order = 0)
-    val koinTestRule = KoinTestRule(modules = listOf(appModule, instrumentedTestModule, dataModule, dataBaseModule))
+    @get:Rule
+    val permissionRule: GrantPermissionRule = GrantPermissionRule.grant(android.Manifest.permission.POST_NOTIFICATIONS)
 
     @get:Rule(order = 1)
+    var hiltTestRule = HiltAndroidRule(this)
+
+    @get:Rule(order = 2)
     val composeTestRule = createComposeRule()
 
     private val context: Context = InstrumentationRegistry.getInstrumentation().targetContext
@@ -70,11 +68,12 @@ class ArtworksScreenTest {
     }
 
     private fun launchArtworksScreen(shouldSucceed: Boolean) {
-        composeTestRule.setContent {
-            KoinContext {
-                val mockedRepository: FakeArtRepositoryImpl = getKoin().get<ArtRepository>() as FakeArtRepositoryImpl
-                mockedRepository.isSuccess = shouldSucceed
+        FakeRepositoryModule.setShouldSucceed(shouldSucceed)
+        hiltTestRule.inject()
 
+        val scenario = ActivityScenario.launch(MainActivity::class.java)
+        scenario.onActivity { activity ->
+            activity.setContent {
                 Art_catalog_appTheme {
                     ArtworksScreen({})
                 }

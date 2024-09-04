@@ -11,20 +11,20 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.alejandrorios.art_catalog_app.R
 import com.alejandrorios.art_catalog_app.helpers.NotificationHelper
 import com.alejandrorios.art_catalog_app.ui.components.EmptyView
 import com.alejandrorios.art_catalog_app.ui.components.ShimmerLoadingView
 import com.alejandrorios.art_catalog_app.ui.components.SwipeableListView
-import org.koin.androidx.compose.koinViewModel
-import org.koin.compose.koinInject
+import com.alejandrorios.art_catalog_app.ui.utils.rememberNotificationHelper
 
 @Composable
 fun ArtworkFavoritesScreen(
     navigateToArtworkDetails: (artworkId: Int) -> Unit,
-    viewModel: ArtworkFavoritesViewModel = koinViewModel(),
-    notificationHelper: NotificationHelper = koinInject(),
+    viewModel: ArtworkFavoritesViewModel = hiltViewModel(),
+    notificationHelper: NotificationHelper = rememberNotificationHelper()
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 
@@ -35,7 +35,7 @@ fun ArtworkFavoritesScreen(
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .semantics {  contentDescription = "Artwork Favorites" },
+            .semantics { contentDescription = "Artwork Favorites" },
     ) {
         when {
             uiState.isLoading -> ShimmerLoadingView()

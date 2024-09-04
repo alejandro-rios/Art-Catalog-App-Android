@@ -5,10 +5,12 @@ import android.content.Context
 import androidx.annotation.StringRes
 import androidx.core.app.NotificationCompat
 import com.alejandrorios.art_catalog_app.R
+import javax.inject.Inject
 import kotlin.random.Random
 
 const val notificationChannelID = "artwork_catalog_app_channel_id"
-class NotificationHelper(private val context: Context) {
+
+class NotificationHelper @Inject constructor(private val context: Context) {
     private val notificationManager = context.getSystemService(NotificationManager::class.java)
 
     fun showSimpleNotification(@StringRes message: Int) {

@@ -3,7 +3,8 @@ plugins {
     alias(libs.plugins.jetbrainsKotlinAndroid)
     alias(libs.plugins.jetbrainsComposeCompiler)
     alias(libs.plugins.jetbrainsKotlinSerialization)
-    alias(libs.plugins.kotlinKsp)
+    alias(libs.plugins.ksp)
+    alias(libs.plugins.hilt)
 }
 
 android {
@@ -47,6 +48,9 @@ android {
             excludes += "/META-INF/{AL2.0,LGPL2.1}"
         }
     }
+    hilt {
+        enableAggregatingTask = true
+    }
 }
 
 dependencies {
@@ -64,8 +68,9 @@ dependencies {
     implementation(libs.androidx.navigation.compose)
 
     // DI
-    implementation(libs.koin)
-    implementation(libs.koin.android)
+    ksp(libs.hilt.android.compiler)
+    implementation(libs.hilt.android)
+    implementation(libs.hilt.navigation)
 
     // Image loading
     implementation(libs.coil)
@@ -93,14 +98,14 @@ dependencies {
     testImplementation(libs.mockk)
     testImplementation(libs.kluent)
     testImplementation(libs.turbine)
-    testImplementation(libs.koin.test)
     androidTestImplementation(libs.androidx.junit)
-    androidTestImplementation(libs.koin.test.junit)
     androidTestImplementation(libs.androidx.espresso.core)
     androidTestImplementation(platform(libs.androidx.compose.bom))
     androidTestImplementation(libs.androidx.navigation.testing)
     androidTestImplementation(libs.androidx.rules)
     androidTestImplementation(libs.androidx.ui.test.junit4)
+    androidTestImplementation(libs.hilt.android.testing)
+    kspAndroidTest(libs.hilt.android.compiler)
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
 }

@@ -14,30 +14,34 @@ import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.semantics.testTagsAsResourceId
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.alejandrorios.art_catalog_app.R
+import com.alejandrorios.art_catalog_app.di.NotificationHelperEntryPoint
 import com.alejandrorios.art_catalog_app.helpers.NotificationHelper
 import com.alejandrorios.art_catalog_app.ui.components.ArtworkDetailView
 import com.alejandrorios.art_catalog_app.ui.components.ErrorView
 import com.alejandrorios.art_catalog_app.ui.components.LoadingView
 import com.alejandrorios.art_catalog_app.ui.utils.bounceClickable
-import org.koin.androidx.compose.koinViewModel
-import org.koin.compose.koinInject
+import com.alejandrorios.art_catalog_app.ui.utils.rememberNotificationHelper
+import dagger.hilt.EntryPoints
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalComposeUiApi::class)
 @Composable
 fun ArtworkDetailScreen(
     onGoBackPressed: () -> Unit,
     artworkId: Int,
-    viewModel: ArtworkDetailViewModel = koinViewModel(),
-    notificationHelper: NotificationHelper = koinInject(),
+    viewModel: ArtworkDetailViewModel = hiltViewModel(),
+    notificationHelper: NotificationHelper = rememberNotificationHelper()
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 

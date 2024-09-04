@@ -1,44 +1,45 @@
 package com.alejandrorios.art_catalog_app.navigation
 
-import androidx.compose.ui.platform.LocalContext
+import androidx.activity.compose.setContent
 import androidx.compose.ui.test.assertIsDisplayed
-import androidx.compose.ui.test.junit4.createComposeRule
+import androidx.compose.ui.test.junit4.createEmptyComposeRule
 import androidx.compose.ui.test.onNodeWithContentDescription
 import androidx.navigation.compose.ComposeNavigator
 import androidx.navigation.testing.TestNavHostController
-import com.alejandrorios.art_catalog_app.di.appModule
-import com.alejandrorios.art_catalog_app.di.dataBaseModule
-import com.alejandrorios.art_catalog_app.di.dataModule
-import com.alejandrorios.art_catalog_app.domain.repository.ArtRepository
+import androidx.test.core.app.ActivityScenario
+import androidx.test.rule.GrantPermissionRule
+import com.alejandrorios.art_catalog_app.ui.MainActivity
 import com.alejandrorios.art_catalog_app.ui.navigation.ArtworkCatalogNavGraph
-import com.alejandrorios.art_catalog_app.utils.FakeArtRepositoryImpl
-import com.alejandrorios.art_catalog_app.utils.KoinTestRule
+import dagger.hilt.android.testing.HiltAndroidRule
+import dagger.hilt.android.testing.HiltAndroidTest
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
-import org.koin.compose.KoinContext
-import org.koin.dsl.module
 
+@HiltAndroidTest
 class NavigationTest {
 
-    private val instrumentedTestModule = module {
-        single<ArtRepository> { FakeArtRepositoryImpl() }
-    }
-
-    @get:Rule(order = 0)
-    val koinTestRule = KoinTestRule(modules = listOf(appModule, instrumentedTestModule, dataModule, dataBaseModule))
+    @get:Rule
+    val permissionRule: GrantPermissionRule = GrantPermissionRule.grant(android.Manifest.permission.POST_NOTIFICATIONS)
 
     @get:Rule(order = 1)
-    val composeTestRule = createComposeRule()
+    var hiltTestRule = HiltAndroidRule(this)
+
+    @get:Rule(order = 2)
+    val composeTestRule = createEmptyComposeRule()
 
     private lateinit var navController: TestNavHostController
 
     @Before
     fun setupArtworkCatalogNavHost() {
-        composeTestRule.setContent {
-            KoinContext {
-                navController = TestNavHostController(LocalContext.current)
-                navController.navigatorProvider.addNavigator(ComposeNavigator())
+        hiltTestRule.inject()
+
+        val scenario = ActivityScenario.launch(MainActivity::class.java)
+        scenario.onActivity { activity ->
+            navController = TestNavHostController(activity)
+            navController.navigatorProvider.addNavigator(ComposeNavigator())
+
+            activity.setContent {
                 ArtworkCatalogNavGraph(navController = navController)
             }
         }

@@ -5,13 +5,18 @@ import androidx.lifecycle.viewModelScope
 import com.alejandrorios.art_catalog_app.data.utils.CallResponse.Failure
 import com.alejandrorios.art_catalog_app.data.utils.CallResponse.Success
 import com.alejandrorios.art_catalog_app.domain.repository.ArtRepository
+import dagger.hilt.android.lifecycle.HiltViewModel
+import javax.inject.Inject
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
-class ArtworksViewModel(private val artRepository: ArtRepository) : ViewModel() {
+@HiltViewModel
+class ArtworksViewModel @Inject constructor(
+    private val artRepository: ArtRepository
+) : ViewModel() {
     private val _uiState = MutableStateFlow(ArtworksUiState())
     val uiState: StateFlow<ArtworksUiState> = _uiState.asStateFlow()
 

@@ -6,10 +6,12 @@ import com.alejandrorios.art_catalog_app.domain.models.ArtworkDetail
 import com.alejandrorios.art_catalog_app.domain.models.ArtworkPaging
 import com.alejandrorios.art_catalog_app.domain.models.ArtworkResults
 import com.alejandrorios.art_catalog_app.domain.repository.ArtRepository
+import javax.inject.Inject
 
-class FakeArtRepositoryImpl : ArtRepository {
-    var isSuccess: Boolean = true
-
+/**
+ * With Hilt I needed to pass [isSuccess] in the constructor because is going to change from [FakeRepositoryModule]
+ */
+class FakeArtRepositoryImpl @Inject constructor(private val isSuccess: Boolean) : ArtRepository {
     override suspend fun getArtworks(page: Int, limit: Int): CallResponse<ArtworkResults> =
         if (isSuccess) {
             CallResponse.Success(mockedArtworkResults)
@@ -23,6 +25,7 @@ class FakeArtRepositoryImpl : ArtRepository {
         } else {
             CallResponse.Failure(Exception("Something happened"))
         }
+
 }
 
 val mockedArtwork = Artwork(

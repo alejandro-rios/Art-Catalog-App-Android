@@ -2,10 +2,12 @@ package com.alejandrorios.art_catalog_app.ui.screens.artwork_detail
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.alejandrorios.art_catalog_app.data.db.ArtworksDao
 import com.alejandrorios.art_catalog_app.data.utils.CallResponse.Failure
 import com.alejandrorios.art_catalog_app.data.utils.CallResponse.Success
-import com.alejandrorios.art_catalog_app.data.db.ArtworksDao
 import com.alejandrorios.art_catalog_app.domain.repository.ArtRepository
+import dagger.hilt.android.lifecycle.HiltViewModel
+import javax.inject.Inject
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -14,7 +16,11 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
-class ArtworkDetailViewModel(private val artRepository: ArtRepository, private val dao: ArtworksDao) : ViewModel() {
+@HiltViewModel
+class ArtworkDetailViewModel @Inject constructor(
+    private val artRepository: ArtRepository,
+    private val dao: ArtworksDao
+) : ViewModel() {
 
     private val _uiState = MutableStateFlow(ArtworkDetailUIState())
     val uiState: StateFlow<ArtworkDetailUIState> = _uiState.asStateFlow()

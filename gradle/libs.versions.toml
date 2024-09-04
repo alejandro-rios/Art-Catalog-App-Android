@@ -10,7 +10,6 @@ activityCompose = "1.9.1"
 composeBom = "2024.08.00"
 navigation = "2.7.7"
 room = "2.6.1"
-koin = "3.5.3"
 coil = "2.6.0"
 kotlinCoroutines = "1.8.1"
 retrofit2 = "2.11.0"
@@ -23,6 +22,8 @@ turbine = "1.1.0"
 ksp = "2.0.0-1.0.23"
 accompanist= "0.31.1-alpha"
 testRules = "1.6.1"
+hilt = "2.49"
+hilt-navigation = "1.2.0"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -49,10 +50,9 @@ androidx-room-ktx = { group = "androidx.room", name = "room-ktx", version.ref = 
 androidx-room-compiler = { group = "androidx.room", name = "room-compiler", version.ref = "room" }
 
 # DI
-koin-android = { group = "io.insert-koin", name = "koin-android", version.ref = "koin" }
-koin = { group = "io.insert-koin", name = "koin-androidx-compose", version.ref = "koin" }
-koin-test-junit = { group = "io.insert-koin", name = "koin-test-junit4", version.ref = "koin" }
-koin-test = { group = "io.insert-koin", name = "koin-test", version.ref = "koin" }
+hilt-android-compiler = { group = "com.google.dagger", name = "hilt-android-compiler", version.ref = "hilt" }
+hilt-android = { group = "com.google.dagger", name = "hilt-android", version.ref = "hilt" }
+hilt-navigation = { group = "androidx.hilt", name = "hilt-navigation-compose", version.ref = "hilt-navigation" }
 
 # Network
 retrofit2 = { group = "com.squareup.retrofit2", name = "retrofit", version.ref = "retrofit2" }
@@ -77,11 +77,13 @@ kluent = { group = "org.amshove.kluent", name = "kluent", version.ref = "kluent"
 turbine = { group = "app.cash.turbine", name = "turbine", version.ref = "turbine" }
 androidx-rules = { group = "androidx.test", name = "rules", version.ref = "testRules" }
 androidx-navigation-testing = { group = "androidx.navigation", name = "navigation-testing", version.ref = "navigation" }
+hilt-android-testing = { group = "com.google.dagger", name = "hilt-android-testing", version.ref = "hilt" }
 
 [plugins]
 androidApplication = { id = "com.android.application", version.ref = "agp" }
 jetbrainsKotlinAndroid = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 jetbrainsKotlinSerialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
 jetbrainsComposeCompiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
-kotlinKsp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
+ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
+hilt = { id = "com.google.dagger.hilt.android", version.ref = "hilt" }
 
