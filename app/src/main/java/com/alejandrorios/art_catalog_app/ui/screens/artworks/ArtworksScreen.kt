@@ -19,8 +19,8 @@ import org.koin.androidx.compose.koinViewModel
 
 @Composable
 fun ArtworksScreen(
-    navigateToArtworkDetails: (artworkId: Int) -> Unit,
-    viewModel: ArtworksViewModel = koinViewModel()
+    viewModel: ArtworksViewModel = koinViewModel(),
+    navigateToArtworkDetails: (artworkId: Int) -> Unit
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 

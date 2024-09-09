@@ -76,7 +76,7 @@ class ArtworksScreenTest {
                 mockedRepository.isSuccess = shouldSucceed
 
                 Art_catalog_appTheme {
-                    ArtworksScreen({})
+                    ArtworksScreen{}
                 }
             }
         }

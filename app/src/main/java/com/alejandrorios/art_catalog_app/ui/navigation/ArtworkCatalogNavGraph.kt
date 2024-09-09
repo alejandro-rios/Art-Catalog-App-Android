@@ -5,64 +5,54 @@ import androidx.compose.animation.core.tween
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
-import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import androidx.navigation.navArgument
+import androidx.navigation.toRoute
 import com.alejandrorios.art_catalog_app.ui.screens.artwork_detail.ArtworkDetailScreen
 import com.alejandrorios.art_catalog_app.ui.screens.artwork_favorites.ArtworkFavoritesScreen
 import com.alejandrorios.art_catalog_app.ui.screens.artworks.ArtworksScreen
+import kotlinx.serialization.Serializable
 
 @Composable
 fun ArtworkCatalogNavGraph(
     modifier: Modifier = Modifier,
-    navController: NavHostController,
-    startDestination: String = NavigationItem.Home.route
+    navController: NavHostController
 ) {
     NavHost(
         modifier = modifier,
         navController = navController,
-        startDestination = startDestination
+        startDestination = Home
     ) {
-        composable(NavigationItem.Home.route) {
-            ArtworksScreen(navigateToArtworkDetails = {
-                navController.navigate("${NavigationItem.ArtworkDetails.route}/$it")
-            })
+        composable<Home> {
+            ArtworksScreen { artworkId ->
+                navController.navigate(ArtworkNavDetail(artworkId))
+            }
         }
-        composable(
-            route = "${NavigationItem.ArtworkDetails.route}/{artworkId}",
+        composable<ArtworkNavDetail>(
             enterTransition = {
                 return@composable slideIntoContainer(AnimatedContentTransitionScope.SlideDirection.Start, tween(700))
             },
             popExitTransition = {
                 return@composable slideOutOfContainer(AnimatedContentTransitionScope.SlideDirection.End, tween(700))
             },
-            arguments = listOf(navArgument("artworkId") {
-                type = NavType.StringType
-            })
         ) { backStackEntry ->
-            val artworkId = backStackEntry.arguments?.getString("artworkId")
+            val artworkNavDetail: ArtworkNavDetail = backStackEntry.toRoute()
 
-            ArtworkDetailScreen(onGoBackPressed = { navController.popBackStack() }, artworkId = artworkId!!.toInt())
+            ArtworkDetailScreen(artworkId = artworkNavDetail.id) { navController.popBackStack() }
         }
-        composable(
-            route = NavigationItem.ArtworkFavorites.route,
-        ) {
-            ArtworkFavoritesScreen(navigateToArtworkDetails = {
-                navController.navigate("${NavigationItem.ArtworkDetails.route}/$it")
-            })
+        composable<ArtworkFavorites> {
+            ArtworkFavoritesScreen { artworkId ->
+                navController.navigate(ArtworkNavDetail(artworkId))
+            }
         }
     }
 }
 
-enum class Screen {
-    HOME,
-    ARTWORK_DETAILS,
-    ARTWORK_FAVORITES,
-}
+@Serializable
+data object Home
 
-sealed class NavigationItem(val route: String) {
-    data object Home : NavigationItem(Screen.HOME.name)
-    data object ArtworkDetails : NavigationItem(Screen.ARTWORK_DETAILS.name)
-    data object ArtworkFavorites : NavigationItem(Screen.ARTWORK_FAVORITES.name)
-}
+@Serializable
+data class ArtworkNavDetail(val id: Int)
+
+@Serializable
+data object ArtworkFavorites

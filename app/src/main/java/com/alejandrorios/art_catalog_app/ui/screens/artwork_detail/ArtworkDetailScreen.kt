@@ -34,10 +34,10 @@ import org.koin.compose.koinInject
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalComposeUiApi::class)
 @Composable
 fun ArtworkDetailScreen(
-    onGoBackPressed: () -> Unit,
     artworkId: Int,
     viewModel: ArtworkDetailViewModel = koinViewModel(),
     notificationHelper: NotificationHelper = koinInject(),
+    onGoBackPressed: () -> Unit
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 

@@ -90,7 +90,7 @@ class ArtworksDetailScreenTest {
                 mockedRepository.isSuccess = shouldSucceed
 
                 Art_catalog_appTheme {
-                    ArtworkDetailScreen({}, 12472)
+                    ArtworkDetailScreen( 12472){}
                 }
             }
         }

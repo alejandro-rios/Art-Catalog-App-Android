@@ -22,9 +22,9 @@ import org.koin.compose.koinInject
 
 @Composable
 fun ArtworkFavoritesScreen(
-    navigateToArtworkDetails: (artworkId: Int) -> Unit,
     viewModel: ArtworkFavoritesViewModel = koinViewModel(),
     notificationHelper: NotificationHelper = koinInject(),
+    navigateToArtworkDetails: (artworkId: Int) -> Unit,
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 

@@ -3,19 +3,14 @@ package com.alejandrorios.art_catalog_app.ui.screens.artwork_main
 import android.Manifest
 import android.os.Build
 import androidx.annotation.RequiresApi
-import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.animation.fadeIn
-import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
-import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.alejandrorios.art_catalog_app.ui.components.BottomNavigationBar
 import com.alejandrorios.art_catalog_app.ui.navigation.ArtworkCatalogNavGraph
-import com.alejandrorios.art_catalog_app.ui.navigation.NavigationItem
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.isGranted
 import com.google.accompanist.permissions.rememberPermissionState
@@ -35,15 +30,7 @@ fun ArtworkMainScreen() {
 
     Scaffold(
         bottomBar = {
-            val actualScreen = navController.currentBackStackEntryAsState().value?.destination?.route
-
-            AnimatedVisibility(
-                visible = actualScreen?.contains(NavigationItem.ArtworkDetails.route) == false,
-                enter = fadeIn(),
-                exit = fadeOut(),
-            ) {
-                BottomNavigationBar(navController = navController)
-            }
+            BottomNavigationBar(navController = navController)
         }
     ) { paddingValues ->
         ArtworkCatalogNavGraph(modifier = Modifier.padding(paddingValues), navController = navController)
