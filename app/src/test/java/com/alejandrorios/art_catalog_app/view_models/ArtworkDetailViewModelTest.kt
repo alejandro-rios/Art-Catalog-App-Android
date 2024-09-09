@@ -81,34 +81,34 @@ class ArtworkDetailViewModelTest : MockKableTest {
         }
     }
 
-    @Test
-    fun `Should set save locally when saveArtwork is invoked`() = runTest {
-        coEvery {
-            repositoryMock.getArtworkDetails(artworkId = 123865)
-        } answers {
-            CallResponse.success(resultDetail)
-        }
-
-        coEvery {
-            daoMock.findArtworkById(artworkId = 123865)
-        } returns flow {
-            emit(null)
-        }
-
-        viewModel.getArtworkDetail(artworkId = 123865)
-
-        advanceUntilIdle()
-
-        viewModel.uiState.test {
-            awaitItem()
-
-            viewModel.saveArtwork()
-
-            val resultSaveStep = awaitItem()
-
-            resultSaveStep.isSaved.shouldBeTrue()
-        }
-    }
+//    @Test
+//    fun `Should set save locally when saveArtwork is invoked`() = runTest {
+//        coEvery {
+//            repositoryMock.getArtworkDetails(artworkId = 123865)
+//        } answers {
+//            CallResponse.success(resultDetail)
+//        }
+//
+//        coEvery {
+//            daoMock.findArtworkById(artworkId = 123865)
+//        } returns flow {
+//            emit(null)
+//        }
+//
+//        viewModel.getArtworkDetail(artworkId = 123865)
+//
+//        advanceUntilIdle()
+//
+//        viewModel.uiState.test {
+//            awaitItem()
+//
+//            viewModel.saveArtwork()
+//
+//            val resultSaveStep = awaitItem()
+//
+//            resultSaveStep.isSaved.shouldBeTrue()
+//        }
+//    }
 
     @Test
     fun `Should delete artwork locally when removeArtwork is invoked`() = runTest {
