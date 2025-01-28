@@ -1,5 +1,5 @@
 [![Build](https://github.com/alejandro-rios/Art-Catalog-App-Android/actions/workflows/run_unit_tests.yml/badge.svg)](https://github.com/alejandro-rios/Art-Catalog-App-Android/actions/workflows/run_unit_tests.yml)
-[![Kotlin](https://img.shields.io/badge/Kotlin-2.0.0-blue.svg?style=flat&logo=kotlin)](https://kotlinlang.org)
+[![Kotlin](https://img.shields.io/badge/Kotlin-2.1.0-blue.svg?style=flat&logo=kotlin)](https://kotlinlang.org)
 ![badge-android](http://img.shields.io/badge/platform-android-3DDC84.svg?style=flat)
 
 # Art Catalog App 🎉🎉

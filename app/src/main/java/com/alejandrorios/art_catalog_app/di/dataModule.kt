@@ -1,7 +1,9 @@
 package com.alejandrorios.art_catalog_app.di
 
-import com.alejandrorios.art_catalog_app.data.network.BASE_URL
 import com.alejandrorios.art_catalog_app.data.network.ArtAPIService
+import com.alejandrorios.art_catalog_app.data.network.BASE_URL
+import com.alejandrorios.art_catalog_app.data.utils.AppDispatchers
+import com.alejandrorios.art_catalog_app.data.utils.AppDispatchersImpl
 import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
 import java.util.concurrent.TimeUnit
 import kotlinx.serialization.json.Json
@@ -40,6 +42,9 @@ val dataModule = module {
 
     // Service
     single { createArtApiService(get()) }
+
+    // Dispatchers
+    single<AppDispatchers> { AppDispatchersImpl() }
 }
 
 fun createArtApiService(retrofit: Retrofit): ArtAPIService = retrofit.create(ArtAPIService::class.java)

@@ -6,5 +6,5 @@ import org.koin.dsl.module
 
 val domainModule = module {
     // Repository
-    single<ArtRepository> { ArtRepositoryImpl(get()) }
+    single<ArtRepository> { ArtRepositoryImpl(get(), get()) }
 }

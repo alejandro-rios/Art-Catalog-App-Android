@@ -2,17 +2,20 @@ package com.alejandrorios.art_catalog_app.view_models
 
 import app.cash.turbine.test
 import com.alejandrorios.art_catalog_app.data.db.ArtworksDao
+import com.alejandrorios.art_catalog_app.data.utils.AppDispatchers
 import com.alejandrorios.art_catalog_app.domain.models.Artwork
 import com.alejandrorios.art_catalog_app.ui.screens.artwork_favorites.ArtworkFavoritesViewModel
 import com.alejandrorios.art_catalog_app.utils.MainDispatcherRule
 import com.alejandrorios.art_catalog_app.utils.MockKableTest
 import io.mockk.coEvery
+import io.mockk.every
 import io.mockk.impl.annotations.MockK
 import io.mockk.just
 import io.mockk.mockk
 import io.mockk.runs
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.test.UnconfinedTestDispatcher
 import kotlinx.coroutines.test.advanceUntilIdle
 import kotlinx.coroutines.test.runTest
 import org.amshove.kluent.shouldBeEqualTo
@@ -31,13 +34,16 @@ class ArtworkFavoritesViewModelTest : MockKableTest {
     lateinit var daoMock: ArtworksDao
 
     private lateinit var viewModel: ArtworkFavoritesViewModel
+    private val dispatcher = mockk<AppDispatchers>(relaxed = true) {
+        every { io } returns UnconfinedTestDispatcher()
+    }
     private val resultArtworks = mockk<List<Artwork>>(relaxed = true)
     private val mockedArtwork = mockk<Artwork>(relaxed = true)
 
     @Before
     override fun setUp() {
         super.setUp()
-        viewModel = ArtworkFavoritesViewModel( daoMock)
+        viewModel = ArtworkFavoritesViewModel(daoMock, dispatcher)
     }
 
     @Test

@@ -1,6 +1,7 @@
 package com.alejandrorios.art_catalog_app.view_models
 
 import app.cash.turbine.test
+import com.alejandrorios.art_catalog_app.data.utils.AppDispatchers
 import com.alejandrorios.art_catalog_app.data.utils.CallResponse
 import com.alejandrorios.art_catalog_app.data.utils.NetworkErrorException
 import com.alejandrorios.art_catalog_app.domain.models.Artwork
@@ -14,7 +15,9 @@ import io.mockk.coEvery
 import io.mockk.every
 import io.mockk.impl.annotations.MockK
 import io.mockk.mockk
+import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.test.UnconfinedTestDispatcher
 import kotlinx.coroutines.test.advanceUntilIdle
 import kotlinx.coroutines.test.runTest
 import org.amshove.kluent.shouldBeEqualTo
@@ -31,6 +34,10 @@ class ArtworksViewModelTest : MockKableTest {
 
     @MockK
     lateinit var repositoryMock: ArtRepository
+
+    private val dispatcher = mockk<AppDispatchers>(relaxed = true) {
+        every { io } returns UnconfinedTestDispatcher()
+    }
 
     private lateinit var viewModel: ArtworksViewModel
     private val result = mockk<ArtworkResults>(relaxed = true)
@@ -49,7 +56,7 @@ class ArtworksViewModelTest : MockKableTest {
     @Before
     override fun setUp() {
         super.setUp()
-        viewModel = ArtworksViewModel(repositoryMock)
+        viewModel = ArtworksViewModel(repositoryMock, dispatcher)
     }
 
     @Test

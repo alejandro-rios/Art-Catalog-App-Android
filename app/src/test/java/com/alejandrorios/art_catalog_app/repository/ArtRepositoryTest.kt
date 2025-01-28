@@ -4,6 +4,7 @@ import com.alejandrorios.art_catalog_app.data.models.APIArtworkDetailResult
 import com.alejandrorios.art_catalog_app.data.models.APIArtworkResults
 import com.alejandrorios.art_catalog_app.data.network.ArtAPIService
 import com.alejandrorios.art_catalog_app.data.repository.ArtRepositoryImpl
+import com.alejandrorios.art_catalog_app.data.utils.AppDispatchers
 import com.alejandrorios.art_catalog_app.data.utils.CallResponse
 import com.alejandrorios.art_catalog_app.data.utils.NetworkErrorException
 import com.alejandrorios.art_catalog_app.utils.MockKableTest
@@ -13,7 +14,9 @@ import io.mockk.coVerify
 import io.mockk.every
 import io.mockk.impl.annotations.MockK
 import io.mockk.mockk
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.test.UnconfinedTestDispatcher
 import org.amshove.kluent.shouldBeInstanceOf
 import org.junit.Before
 import org.junit.Test
@@ -21,17 +24,22 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
+@OptIn(ExperimentalCoroutinesApi::class)
 class ArtRepositoryTest : MockKableTest {
 
     @MockK
     lateinit var artAPIService: ArtAPIService
+
+    private val dispatcher = mockk<AppDispatchers>(relaxed = true) {
+        every { io } returns UnconfinedTestDispatcher()
+    }
 
     private lateinit var repository: ArtRepositoryImpl
 
     @Before
     override fun setUp() {
         super.setUp()
-        repository = ArtRepositoryImpl(artAPIService)
+        repository = ArtRepositoryImpl(artAPIService, dispatcher)
     }
 
     @Test
@@ -113,7 +121,7 @@ class ArtRepositoryTest : MockKableTest {
         val slot = CapturingSlot<Callback<APIArtworkResults>>()
 
         coEvery {
-            artAPIService.getArtworks( 10, 0)
+            artAPIService.getArtworks(10, 0)
         } returns call
 
         every { call.enqueue(capture(slot)) } answers {
@@ -125,11 +133,11 @@ class ArtRepositoryTest : MockKableTest {
         } throws NetworkErrorException("some message")
 
         runBlocking {
-            repository.getArtworks( 10, 0)
+            repository.getArtworks(10, 0)
         } shouldBeInstanceOf CallResponse.Failure::class
 
         coVerify {
-            artAPIService.getArtworks( 10, 0)
+            artAPIService.getArtworks(10, 0)
             call.enqueue(any())
         }
     }
