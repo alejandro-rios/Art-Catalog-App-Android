@@ -88,7 +88,7 @@ class ArtworksDetailScreenTest {
         scenario.onActivity { activity ->
             activity.setContent {
                 Art_catalog_appTheme {
-                    ArtworkDetailScreen({}, 12472)
+                    ArtworkDetailScreen( 12472){}
                 }
             }
         }

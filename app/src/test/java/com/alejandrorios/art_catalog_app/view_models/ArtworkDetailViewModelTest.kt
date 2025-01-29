@@ -1,9 +1,10 @@
 package com.alejandrorios.art_catalog_app.view_models
 
 import app.cash.turbine.test
+import com.alejandrorios.art_catalog_app.data.db.ArtworksDao
+import com.alejandrorios.art_catalog_app.data.utils.AppDispatchers
 import com.alejandrorios.art_catalog_app.data.utils.CallResponse
 import com.alejandrorios.art_catalog_app.data.utils.NetworkErrorException
-import com.alejandrorios.art_catalog_app.data.db.ArtworksDao
 import com.alejandrorios.art_catalog_app.domain.models.Artwork
 import com.alejandrorios.art_catalog_app.domain.models.ArtworkDetail
 import com.alejandrorios.art_catalog_app.domain.repository.ArtRepository
@@ -11,11 +12,15 @@ import com.alejandrorios.art_catalog_app.ui.screens.artwork_detail.ArtworkDetail
 import com.alejandrorios.art_catalog_app.utils.MainDispatcherRule
 import com.alejandrorios.art_catalog_app.utils.MockKableTest
 import io.mockk.coEvery
+import io.mockk.coJustRun
+import io.mockk.coVerify
+import io.mockk.confirmVerified
+import io.mockk.every
 import io.mockk.impl.annotations.MockK
 import io.mockk.mockk
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.flow
-import kotlinx.coroutines.test.advanceUntilIdle
+import kotlinx.coroutines.test.UnconfinedTestDispatcher
 import kotlinx.coroutines.test.runTest
 import org.amshove.kluent.shouldBeEqualTo
 import org.amshove.kluent.shouldBeFalse
@@ -37,25 +42,35 @@ class ArtworkDetailViewModelTest : MockKableTest {
     lateinit var daoMock: ArtworksDao
 
     private lateinit var viewModel: ArtworkDetailViewModel
-    private val resultDetail = mockk<ArtworkDetail>(relaxed = true)
+    private val dispatcher = mockk<AppDispatchers>(relaxed = true) {
+        every { io } returns UnconfinedTestDispatcher()
+    }
     private val result = mockk<Artwork>(relaxed = true)
+    private val resultDetail = mockk<ArtworkDetail>(relaxed = true) {
+        every { mapAsArtwork() } returns result
+    }
 
     @Before
     override fun setUp() {
         super.setUp()
-        viewModel = ArtworkDetailViewModel(repositoryMock, daoMock)
+        viewModel = ArtworkDetailViewModel(
+            artRepository = repositoryMock,
+            dao = daoMock,
+            dispatcher = dispatcher,
+            enableDelay = false
+        )
     }
 
     @Test
     fun `Should set update artworkDetails when getArtworkDetails is invoked`() = runTest {
         coEvery {
-            repositoryMock.getArtworkDetails(artworkId = 123865)
+            repositoryMock.getArtworkDetails(any())
         } answers {
             CallResponse.success(resultDetail)
         }
 
         coEvery {
-            daoMock.findArtworkById(artworkId = 123865)
+            daoMock.findArtworkById(any())
         } returns flow {
             emit(result)
         }
@@ -79,25 +94,34 @@ class ArtworkDetailViewModelTest : MockKableTest {
             resultStep.isLoading.shouldBeFalse()
             resultStep.isSaved.shouldBeTrue()
         }
+
+        coVerify(exactly = 1) {
+            repositoryMock.getArtworkDetails(artworkId = 123865)
+            daoMock.findArtworkById(artworkId = 123865)
+        }
+
+        confirmVerified(repositoryMock, daoMock)
     }
 
     @Test
     fun `Should set save locally when saveArtwork is invoked`() = runTest {
         coEvery {
-            repositoryMock.getArtworkDetails(artworkId = 123865)
+            repositoryMock.getArtworkDetails(any())
         } answers {
             CallResponse.success(resultDetail)
         }
 
         coEvery {
-            daoMock.findArtworkById(artworkId = 123865)
+            daoMock.findArtworkById(any())
         } returns flow {
             emit(null)
         }
 
-        viewModel.getArtworkDetail(artworkId = 123865)
+        coJustRun {
+            daoMock.insertArtwork(any())
+        }
 
-        advanceUntilIdle()
+        viewModel.getArtworkDetail(artworkId = 123865)
 
         viewModel.uiState.test {
             awaitItem()
@@ -108,25 +132,33 @@ class ArtworkDetailViewModelTest : MockKableTest {
 
             resultSaveStep.isSaved.shouldBeTrue()
         }
+
+        coVerify(exactly = 1) {
+            repositoryMock.getArtworkDetails(artworkId = 123865)
+            daoMock.findArtworkById(artworkId = 123865)
+            daoMock.insertArtwork(result)
+        }
+
+        confirmVerified(repositoryMock, daoMock)
     }
 
     @Test
     fun `Should delete artwork locally when removeArtwork is invoked`() = runTest {
         coEvery {
-            repositoryMock.getArtworkDetails(artworkId = 123865)
+            repositoryMock.getArtworkDetails(any())
         } answers {
             CallResponse.success(resultDetail)
         }
 
         coEvery {
-            daoMock.findArtworkById(artworkId = 123865)
+            daoMock.findArtworkById(any())
         } returns flow {
             emit(result)
         }
 
-        viewModel.getArtworkDetail(artworkId = 123865)
+        coJustRun { daoMock.deleteArtwork(any()) }
 
-        advanceUntilIdle()
+        viewModel.getArtworkDetail(artworkId = 123865)
 
         viewModel.uiState.test {
             val validationStep = awaitItem()
@@ -139,12 +171,20 @@ class ArtworkDetailViewModelTest : MockKableTest {
 
             resultSaveStep.isSaved.shouldBeFalse()
         }
+
+        coVerify(exactly = 1) {
+            repositoryMock.getArtworkDetails(artworkId = 123865)
+            daoMock.findArtworkById(artworkId = 123865)
+            daoMock.deleteArtwork(result)
+        }
+
+        confirmVerified(repositoryMock, daoMock)
     }
 
     @Test
     fun `Should set update error message when getArtworkDetails is invoked and fails`() = runTest {
         coEvery {
-            repositoryMock.getArtworkDetails(artworkId = 0)
+            repositoryMock.getArtworkDetails(any())
         } answers {
             CallResponse.failure<NetworkErrorException>(NetworkErrorException("An error occurred"))
         }
@@ -161,6 +201,12 @@ class ArtworkDetailViewModelTest : MockKableTest {
             resultStep.errorMessage shouldBeEqualTo "An error occurred"
             resultStep.artworkDetails.shouldBeNull()
         }
+
+        coVerify(exactly = 1) {
+            repositoryMock.getArtworkDetails(artworkId = 0)
+        }
+
+        confirmVerified(repositoryMock)
     }
 }
 

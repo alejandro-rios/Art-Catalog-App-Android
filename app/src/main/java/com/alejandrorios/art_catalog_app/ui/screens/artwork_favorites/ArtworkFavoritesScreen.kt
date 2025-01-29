@@ -22,9 +22,9 @@ import com.alejandrorios.art_catalog_app.ui.utils.rememberNotificationHelper
 
 @Composable
 fun ArtworkFavoritesScreen(
-    navigateToArtworkDetails: (artworkId: Int) -> Unit,
     viewModel: ArtworkFavoritesViewModel = hiltViewModel(),
-    notificationHelper: NotificationHelper = rememberNotificationHelper()
+    notificationHelper: NotificationHelper = rememberNotificationHelper(),
+    navigateToArtworkDetails: (artworkId: Int) -> Unit,
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 

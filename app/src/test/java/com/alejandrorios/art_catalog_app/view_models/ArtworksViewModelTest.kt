@@ -1,6 +1,7 @@
 package com.alejandrorios.art_catalog_app.view_models
 
 import app.cash.turbine.test
+import com.alejandrorios.art_catalog_app.data.utils.AppDispatchers
 import com.alejandrorios.art_catalog_app.data.utils.CallResponse
 import com.alejandrorios.art_catalog_app.data.utils.NetworkErrorException
 import com.alejandrorios.art_catalog_app.domain.models.Artwork
@@ -11,10 +12,13 @@ import com.alejandrorios.art_catalog_app.ui.screens.artworks.ArtworksViewModel
 import com.alejandrorios.art_catalog_app.utils.MainDispatcherRule
 import com.alejandrorios.art_catalog_app.utils.MockKableTest
 import io.mockk.coEvery
+import io.mockk.coVerify
+import io.mockk.confirmVerified
 import io.mockk.every
 import io.mockk.impl.annotations.MockK
 import io.mockk.mockk
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.test.UnconfinedTestDispatcher
 import kotlinx.coroutines.test.advanceUntilIdle
 import kotlinx.coroutines.test.runTest
 import org.amshove.kluent.shouldBeEqualTo
@@ -31,6 +35,10 @@ class ArtworksViewModelTest : MockKableTest {
 
     @MockK
     lateinit var repositoryMock: ArtRepository
+
+    private val dispatcher = mockk<AppDispatchers>(relaxed = true) {
+        every { io } returns UnconfinedTestDispatcher()
+    }
 
     private lateinit var viewModel: ArtworksViewModel
     private val result = mockk<ArtworkResults>(relaxed = true)
@@ -49,7 +57,7 @@ class ArtworksViewModelTest : MockKableTest {
     @Before
     override fun setUp() {
         super.setUp()
-        viewModel = ArtworksViewModel(repositoryMock)
+        viewModel = ArtworksViewModel(repositoryMock, dispatcher)
     }
 
     @Test
@@ -83,6 +91,12 @@ class ArtworksViewModelTest : MockKableTest {
             resultStep.artworksTotalPages shouldBeEqualTo 20
             resultStep.artworks shouldBeEqualTo artworkList
         }
+
+        coVerify(exactly = 1) {
+            repositoryMock.getArtworks(1)
+        }
+
+        confirmVerified(repositoryMock)
     }
 
     @Test
@@ -109,6 +123,12 @@ class ArtworksViewModelTest : MockKableTest {
             resultStep.errorMessage shouldBeEqualTo "An error occurred"
             resultStep.artworks shouldBeEqualTo emptyList()
         }
+
+        coVerify(exactly = 1) {
+            repositoryMock.getArtworks(1)
+        }
+
+        confirmVerified(repositoryMock)
     }
 
     @Test
@@ -165,6 +185,13 @@ class ArtworksViewModelTest : MockKableTest {
             resultStep.artworksCurrentPage shouldBeEqualTo 2
             resultStep.artworks shouldBeEqualTo artworkList + moreArtworks
         }
+
+        coVerify(exactly = 1) {
+            repositoryMock.getArtworks(1)
+            repositoryMock.getArtworks(2)
+        }
+
+        confirmVerified(repositoryMock)
     }
 
     @Test
@@ -218,5 +245,12 @@ class ArtworksViewModelTest : MockKableTest {
             resultStep.errorMessage shouldBeEqualTo "An error occurred"
             resultStep.artworks shouldBeEqualTo artworkList
         }
+
+        coVerify(exactly = 1) {
+            repositoryMock.getArtworks(1)
+            repositoryMock.getArtworks(2)
+        }
+
+        confirmVerified(repositoryMock)
     }
 }

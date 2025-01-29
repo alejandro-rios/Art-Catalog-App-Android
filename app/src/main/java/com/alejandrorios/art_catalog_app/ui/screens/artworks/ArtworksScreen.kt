@@ -19,8 +19,8 @@ import com.alejandrorios.art_catalog_app.ui.components.ShimmerLoadingView
 
 @Composable
 fun ArtworksScreen(
-    navigateToArtworkDetails: (artworkId: Int) -> Unit,
-    viewModel: ArtworksViewModel = hiltViewModel()
+    viewModel: ArtworksViewModel = hiltViewModel(),
+    navigateToArtworkDetails: (artworkId: Int) -> Unit
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 

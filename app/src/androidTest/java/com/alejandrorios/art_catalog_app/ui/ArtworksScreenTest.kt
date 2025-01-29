@@ -75,7 +75,7 @@ class ArtworksScreenTest {
         scenario.onActivity { activity ->
             activity.setContent {
                 Art_catalog_appTheme {
-                    ArtworksScreen({})
+                    ArtworksScreen{}
                 }
             }
         }

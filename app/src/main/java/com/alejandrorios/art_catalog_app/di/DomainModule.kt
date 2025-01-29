@@ -15,3 +15,4 @@ abstract class DomainModule {
     @Singleton
     abstract fun bindArtRepository(artRepositoryImpl: ArtRepositoryImpl): ArtRepository
 }
+

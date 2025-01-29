@@ -38,10 +38,10 @@ import dagger.hilt.EntryPoints
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalComposeUiApi::class)
 @Composable
 fun ArtworkDetailScreen(
-    onGoBackPressed: () -> Unit,
     artworkId: Int,
     viewModel: ArtworkDetailViewModel = hiltViewModel(),
-    notificationHelper: NotificationHelper = rememberNotificationHelper()
+    notificationHelper: NotificationHelper = rememberNotificationHelper(),
+    onGoBackPressed: () -> Unit
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 
