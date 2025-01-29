@@ -19,6 +19,7 @@ class ArtworkDetailViewModel(
     private val artRepository: ArtRepository,
     private val dao: ArtworksDao,
     private val dispatcher: AppDispatchers,
+    private val enableDelay: Boolean = true
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow(ArtworkDetailUIState())
@@ -36,9 +37,12 @@ class ArtworkDetailViewModel(
         _uiState.update { currentState ->
             currentState.copy(isLoading = true)
         }
-        viewModelScope.launch {
-            // This delay is only for view purposes in the project, nothing else
-            delay(500)
+        viewModelScope.launch(dispatcher.io + coroutineExceptionHandler) {
+            // This delay is only for view purposes in the project, nothing else, added `enableDelay` to disable this on tests
+            if (enableDelay) {
+                delay(500)
+            }
+
             when (val result = artRepository.getArtworkDetails(artworkId)) {
                 is Failure -> _uiState.update { currentState ->
                     currentState.copy(isLoading = false, errorMessage = result.t.message)

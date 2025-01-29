@@ -12,10 +12,11 @@ import com.alejandrorios.art_catalog_app.ui.screens.artworks.ArtworksViewModel
 import com.alejandrorios.art_catalog_app.utils.MainDispatcherRule
 import com.alejandrorios.art_catalog_app.utils.MockKableTest
 import io.mockk.coEvery
+import io.mockk.coVerify
+import io.mockk.confirmVerified
 import io.mockk.every
 import io.mockk.impl.annotations.MockK
 import io.mockk.mockk
-import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.UnconfinedTestDispatcher
 import kotlinx.coroutines.test.advanceUntilIdle
@@ -90,6 +91,12 @@ class ArtworksViewModelTest : MockKableTest {
             resultStep.artworksTotalPages shouldBeEqualTo 20
             resultStep.artworks shouldBeEqualTo artworkList
         }
+
+        coVerify(exactly = 1) {
+            repositoryMock.getArtworks(1)
+        }
+
+        confirmVerified(repositoryMock)
     }
 
     @Test
@@ -116,6 +123,12 @@ class ArtworksViewModelTest : MockKableTest {
             resultStep.errorMessage shouldBeEqualTo "An error occurred"
             resultStep.artworks shouldBeEqualTo emptyList()
         }
+
+        coVerify(exactly = 1) {
+            repositoryMock.getArtworks(1)
+        }
+
+        confirmVerified(repositoryMock)
     }
 
     @Test
@@ -172,6 +185,13 @@ class ArtworksViewModelTest : MockKableTest {
             resultStep.artworksCurrentPage shouldBeEqualTo 2
             resultStep.artworks shouldBeEqualTo artworkList + moreArtworks
         }
+
+        coVerify(exactly = 1) {
+            repositoryMock.getArtworks(1)
+            repositoryMock.getArtworks(2)
+        }
+
+        confirmVerified(repositoryMock)
     }
 
     @Test
@@ -225,5 +245,12 @@ class ArtworksViewModelTest : MockKableTest {
             resultStep.errorMessage shouldBeEqualTo "An error occurred"
             resultStep.artworks shouldBeEqualTo artworkList
         }
+
+        coVerify(exactly = 1) {
+            repositoryMock.getArtworks(1)
+            repositoryMock.getArtworks(2)
+        }
+
+        confirmVerified(repositoryMock)
     }
 }

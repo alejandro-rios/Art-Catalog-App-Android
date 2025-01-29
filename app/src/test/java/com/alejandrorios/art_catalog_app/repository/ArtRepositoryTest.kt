@@ -11,6 +11,7 @@ import com.alejandrorios.art_catalog_app.utils.MockKableTest
 import io.mockk.CapturingSlot
 import io.mockk.coEvery
 import io.mockk.coVerify
+import io.mockk.confirmVerified
 import io.mockk.every
 import io.mockk.impl.annotations.MockK
 import io.mockk.mockk
@@ -76,6 +77,8 @@ class ArtRepositoryTest : MockKableTest {
             artAPIService.getArtworks(1, 10)
             call.enqueue(any())
         }
+
+        confirmVerified(artAPIService)
     }
 
     @Test
@@ -112,6 +115,8 @@ class ArtRepositoryTest : MockKableTest {
             artAPIService.getArtworkDetails(54634)
             call.enqueue(any())
         }
+
+        confirmVerified(artAPIService)
     }
 
     @Test
@@ -140,6 +145,8 @@ class ArtRepositoryTest : MockKableTest {
             artAPIService.getArtworks(10, 0)
             call.enqueue(any())
         }
+
+        confirmVerified(artAPIService)
     }
 
     @Test
@@ -168,5 +175,7 @@ class ArtRepositoryTest : MockKableTest {
             artAPIService.getArtworkDetails(98765)
             call.enqueue(any())
         }
+
+        confirmVerified(artAPIService)
     }
 }

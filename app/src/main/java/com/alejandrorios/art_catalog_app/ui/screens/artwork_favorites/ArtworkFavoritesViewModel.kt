@@ -16,6 +16,7 @@ import kotlinx.coroutines.launch
 class ArtworkFavoritesViewModel(
     private val dao: ArtworksDao,
     private val dispatcher: AppDispatchers,
+    private val enableDelay: Boolean = true
 ) : ViewModel() {
     private val _uiState = MutableStateFlow(ArtworkFavoritesUIState())
     val uiState: StateFlow<ArtworkFavoritesUIState> = _uiState.asStateFlow()
@@ -34,8 +35,11 @@ class ArtworkFavoritesViewModel(
         }
 
         viewModelScope.launch(dispatcher.io + coroutineExceptionHandler) {
-            // This delay is only for view purposes in the project, nothing else
-            delay(500)
+            // This delay is only for view purposes in the project, nothing else, added `enableDelay` to disable this on tests
+            if (enableDelay) {
+                delay(500)
+            }
+
             dao.getArtworks().collect { artworks ->
                 _uiState.update { currentState ->
                     currentState.copy(isLoading = false, artworks = artworks)
